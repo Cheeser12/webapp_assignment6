@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Quotations.Models.Quotation>
+
+@{
+    ViewBag.Title = "Index";
+}
+<h2>Index</h2>
+
+<p>
+    @using(Html.BeginForm("Create", "Quotations")) 
+    {
+        @Html.AntiForgeryToken()
+        <input class="btn btn-primary" type="submit" value="Add Quotation" />
+    }
+</p>
+<p>
+    @using (Html.BeginForm("CreateCategory", "Quotations"))
+    {
+        @Html.AntiForgeryToken()
+        <input class="btn btn-primary" type="submit" value="Add Category" />
+    }
+</p>
+@using (Html.BeginForm())
+{
+    <p>
+        Search:
+        @Html.TextBox("search")
+        <input class="btn btn-success" type="submit" value="Search"/>
+    </p>
+}
+
+<p>
+    @using (Html.BeginForm("Unhide", "Quotations"))
+    {
+        @Html.AntiForgeryToken()
+        <input class="btn" type="submit" value="Unhide Quotations" />
+    }
+</p>
+
+
+
+@if (ViewBag.ShowDisplayAllButton)
+{
+    using (Html.BeginForm())
+    {
+        <input class="btn btn-primary" type="submit" value="Show All" />
+    }
+}
+
+@using GridMvc.Html
+
+@Html.Grid(Model).Columns(columns =>
+{
+    columns.Add(quote => quote.Category.Name).Sortable(true).Filterable(true).Titled("Category");
+    columns.Add(quote => quote.Quote).Titled("Quotation");
+    columns.Add(quote => quote.Author).Sortable(true).Titled("Author");
+    columns.Add(quote => quote.DateAdded).Sortable(true).Filterable(true).Titled("Date Added").Format("{0:MM/dd/yyyy}");
+    columns.Add().Encoded(false).Sanitized(false).RenderValueAs(o =>
+        @Html.ActionLink("Hide", "Hide", new { id = o.QuotationId }, new { @class = "btn btn-default" }));
+})
