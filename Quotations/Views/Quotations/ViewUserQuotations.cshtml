@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Quotations.Models.Quotation>
+
+@{
+    ViewBag.Title = "My Quotations";
+}
+
+<h2>My Quotations</h2>
+
+@using GridMvc.Html
+
+@Html.Grid(Model).Columns(columns =>
+{
+    columns.Add(quote => quote.Category.Name).Sortable(true).Filterable(true).Titled("Category");
+    columns.Add(quote => quote.Quote).Titled("Quotation");
+    columns.Add(quote => quote.Author).Sortable(true).Titled("Author");
+    columns.Add(quote => quote.DateAdded).Sortable(true).Filterable(true).Titled("Date Added").Format("{0:MM/dd/yyyy}");
+    columns.Add().Encoded(false).Sanitized(false).RenderValueAs(o =>
+        @Html.ActionLink("Edit", "Edit", new { id = o.QuotationId }, new { @class = "btn btn-default" }));
+    columns.Add().Encoded(false).Sanitized(false).RenderValueAs(o =>
+        @Html.ActionLink("Delete", "Delete", new { id = o.QuotationId }, new { @class = "btn btn-default" }));
+})

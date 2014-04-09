@@ -7,12 +7,21 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Quotations.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Threading.Tasks;
 
 namespace Quotations.Controllers
 {
     public class QuotationsController : Controller
     {
-        private QuotationsContext db = new QuotationsContext();
+        private QuotationsContext db;
+        private UserManager<ApplicationUser> manager;
+        public QuotationsController()
+        {
+            db = new QuotationsContext();
+            manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+        }
 
         // GET: /Quotations/
         public ActionResult Index(string search)
@@ -62,6 +71,7 @@ namespace Quotations.Controllers
         }
 
         // GET: /Quotations/Create
+        [Authorize]
         public ActionResult Create()
         {
             ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name");
@@ -73,13 +83,16 @@ namespace Quotations.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="QuotationId,Quote,Author,CategoryId,DateAdded")] Quotation quotation)
+        [Authorize]
+        public async Task<ActionResult> Create([Bind(Include="QuotationId,Quote,Author,CategoryId,DateAdded")] Quotation quotation)
         {
+            var user = await manager.FindByIdAsync(User.Identity.GetUserId());
             quotation.DateAdded = DateTime.Today;
+            quotation.User = user;
             if (ModelState.IsValid)
             {
                 db.Quotations.Add(quotation);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
@@ -88,6 +101,7 @@ namespace Quotations.Controllers
         }
 
         // GET /Quotations/CreateCategory
+        [Authorize]
         public ActionResult CreateCategory()
         {
             return View();
@@ -96,6 +110,7 @@ namespace Quotations.Controllers
         // POST /Quotations/CreateCategory
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult CreateCategory([Bind(Include = "Name")] Category category)
         {
 
@@ -117,6 +132,7 @@ namespace Quotations.Controllers
         }
 
         // GET: /Quotations/Edit/5
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -127,6 +143,11 @@ namespace Quotations.Controllers
             if (quotation == null)
             {
                 return HttpNotFound();
+            }
+            var user = manager.FindById(User.Identity.GetUserId());
+            if (quotation.User.Id != user.Id)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
             ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name", quotation.CategoryId);
             return View(quotation);
@@ -139,6 +160,7 @@ namespace Quotations.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="QuotationId,Quote,Author,CategoryId,DateAdded")] Quotation quotation)
         {
+            quotation.DateAdded = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Entry(quotation).State = EntityState.Modified;
@@ -150,6 +172,7 @@ namespace Quotations.Controllers
         }
 
         // GET: /Quotations/Delete/5
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -161,12 +184,18 @@ namespace Quotations.Controllers
             {
                 return HttpNotFound();
             }
+            var user = manager.FindById(User.Identity.GetUserId());
+            if (quotation.User.Id != user.Id)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
             return View(quotation);
         }
 
         // POST: /Quotations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
             Quotation quotation = db.Quotations.Find(id);
@@ -193,6 +222,15 @@ namespace Quotations.Controllers
                 Response.Cookies.Add(cookie);
             }
             return RedirectToAction("Index");
+        }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult ViewUserQuotations()
+        {
+            var user = manager.FindById(User.Identity.GetUserId());
+            var quotes = db.Quotations.Where(q => q.User.Id == user.Id);
+            return View(quotes.ToList());
         }
 
         public ActionResult Unhide()

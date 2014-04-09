@@ -171,6 +171,22 @@
     <Compile Include="Migrations\201404080208431_Initial.Designer.cs">
       <DependentUpon>201404080208431_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404082335378_UserAccounts.cs" />
+    <Compile Include="Migrations\201404082335378_UserAccounts.Designer.cs">
+      <DependentUpon>201404082335378_UserAccounts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404082351099_QuotationUserField.cs" />
+    <Compile Include="Migrations\201404082351099_QuotationUserField.Designer.cs">
+      <DependentUpon>201404082351099_QuotationUserField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404090045164_Test.cs" />
+    <Compile Include="Migrations\201404090045164_Test.Designer.cs">
+      <DependentUpon>201404090045164_Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404090050029_changebase.cs" />
+    <Compile Include="Migrations\201404090050029_changebase.Designer.cs">
+      <DependentUpon>201404090050029_changebase.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Category.cs" />
@@ -181,6 +197,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\aspnet-Quotations-20140407095552.mdf" />
+    <Content Include="App_Data\aspnet-Quotations-20140407095552_log.ldf">
+      <DependentUpon>aspnet-Quotations-20140407095552.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Gridmvc.css" />
@@ -237,10 +257,9 @@
     <Content Include="Views\Quotations\Details.cshtml" />
     <Content Include="Views\Quotations\Edit.cshtml" />
     <Content Include="Views\Quotations\Index.cshtml" />
+    <Content Include="Views\Quotations\ViewUserQuotations.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -251,6 +270,18 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201404080208431_Initial.resx">
       <DependentUpon>201404080208431_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404082335378_UserAccounts.resx">
+      <DependentUpon>201404082335378_UserAccounts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404082351099_QuotationUserField.resx">
+      <DependentUpon>201404082351099_QuotationUserField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404090045164_Test.resx">
+      <DependentUpon>201404090045164_Test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404090050029_changebase.resx">
+      <DependentUpon>201404090050029_changebase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

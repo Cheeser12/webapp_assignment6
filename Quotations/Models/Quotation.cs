@@ -19,5 +19,6 @@ namespace Quotations.Models
         [DisplayName("Date Added")]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime DateAdded { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 }
