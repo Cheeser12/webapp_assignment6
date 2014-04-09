@@ -71,6 +71,7 @@
     columns.Add(quote => quote.Quote).Titled("Quotation");
     columns.Add(quote => quote.Author).Sortable(true).Titled("Author");
     columns.Add(quote => quote.DateAdded).Sortable(true).Filterable(true).Titled("Date Added").Format("{0:MM/dd/yyyy}");
+    columns.Add(quote => quote.User.UserName).Sortable(true).Filterable(true).Titled("Added By");
     columns.Add().Encoded(false).Sanitized(false).RenderValueAs(o =>
         @Html.ActionLink("Hide", "Hide", new { id = o.QuotationId }, new { @class = "btn btn-default" }));
 })
