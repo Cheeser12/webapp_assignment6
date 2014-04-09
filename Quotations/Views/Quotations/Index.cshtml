@@ -5,6 +5,16 @@
 }
 <h2>Index</h2>
 
+@if (ViewBag.IsAdmin != null)
+{
+    <p>
+        @using(Html.BeginForm("Index", "Admin"))
+        {
+            @Html.AntiForgeryToken()
+            <input class="btn btn-danger" type="submit" value="Administrator Panel" />
+        }
+    </p>
+}
 <p>
     @using(Html.BeginForm("ViewUserQuotations", "Quotations"))
     {

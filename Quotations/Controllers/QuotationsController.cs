@@ -27,7 +27,11 @@ namespace Quotations.Controllers
         public ActionResult Index(string search)
         {
             var quotations = db.Quotations.Include(q => q.Category);
-
+            // If the user is an admin, pass that to the viewbag
+            if (User.IsInRole("admin"))
+            {
+                ViewBag.IsAdmin = true;
+            }
             // Process search
             if (!string.IsNullOrEmpty(search))
             {
@@ -145,7 +149,7 @@ namespace Quotations.Controllers
                 return HttpNotFound();
             }
             var user = manager.FindById(User.Identity.GetUserId());
-            if (quotation.User.Id != user.Id)
+            if (quotation.User.Id != user.Id && !User.IsInRole("admin"))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
@@ -185,7 +189,7 @@ namespace Quotations.Controllers
                 return HttpNotFound();
             }
             var user = manager.FindById(User.Identity.GetUserId());
-            if (quotation.User.Id != user.Id)
+            if (quotation.User.Id != user.Id && !User.IsInRole("admin"))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }

@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "Administrator Panel";
+}
+
+<h2>Administrator Panel</h2>
+<p>Careful now, you're living DANGEROUSLY!</p>
+
+@using(Html.BeginForm("ListAll", "Admin"))
+{
+    <div class="form-group">
+        <input class="btn btn-danger" type="submit" value="List All Quotations" />
+    </div>
+}
+
+@using (Html.BeginForm("UserQuotes", "Admin", FormMethod.Get))
+{
+    <div class="form-group">
+        <label for="userList">Quotes by:</label>
+        @Html.DropDownList("User", null, new { id = "userList", @class = "form-control input-sm" })
+        <input class="btn btn-danger" type="submit" value="Get Quotations" />
+    </div>
+}
+
+<h3>Statistics</h3>
+
+<p><b>Number of users:</b> @ViewBag.UserCount</p>
+<p><b>Number of categories:</b> @ViewBag.CategoryCount</p>
+<p><b>Number of quotes:</b> @ViewBag.QuoteCount</p>
+
+<table class="table table-striped">
+    <tr>
+        <td><b>Category Name</b></td>
+        <td><b># of Quotes</b></td>
+    </tr>
+    @foreach (var category in ViewBag.SortedCategories)
+    {
+        <tr>
+            <td>@category.Name</td>
+            <td>@category.Quotations.Count</td>
+        </tr>
+    }
+</table>
+
+<table class="table table-striped">
+    <tr>
+        <td><b>User</b></td>
+        <td><b># of Quotes</b></td>
+    </tr>
+    @foreach (var user in ViewBag.SortedUsers)
+    {
+        <tr>
+            <td>@user.UserName</td>
+            <td>@user.UserQuotes.Count</td>
+        </tr>
+    }
+</table>
