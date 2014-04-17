@@ -59,5 +59,10 @@ namespace Quotations.Controllers
             ViewBag.UserName = user.UserName;
             return View(quotes.ToList());
         }
+
+        public ActionResult ListAll()
+        {
+            return View(db.Quotations.ToList());
+        }
 	}
 }

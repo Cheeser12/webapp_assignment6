@@ -27,6 +27,7 @@ namespace Quotations.Controllers
         public ActionResult Index(string search)
         {
             var quotations = db.Quotations.Include(q => q.Category);
+            ViewBag.UserLoggedIn = User.Identity.IsAuthenticated;
             // If the user is an admin, pass that to the viewbag
             if (User.IsInRole("admin"))
             {
@@ -169,7 +170,15 @@ namespace Quotations.Controllers
             {
                 db.Entry(quotation).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                if (User.IsInRole("admin"))
+                {
+                    return RedirectToAction("Index", "Admin");
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }    
             }
             ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name", quotation.CategoryId);
             return View(quotation);
@@ -205,7 +214,15 @@ namespace Quotations.Controllers
             Quotation quotation = db.Quotations.Find(id);
             db.Quotations.Remove(quotation);
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            if (User.IsInRole("admin"))
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         public ActionResult Hide(int id)

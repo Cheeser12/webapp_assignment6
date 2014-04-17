@@ -15,27 +15,30 @@
         }
     </p>
 }
-<p>
-    @using(Html.BeginForm("ViewUserQuotations", "Quotations"))
-    {
-        @Html.AntiForgeryToken()
-        <input class="btn btn-primary" type="submit" value="View My Quotations" />
-    }
-</p>
-<p>
-    @using(Html.BeginForm("Create", "Quotations")) 
-    {
-        @Html.AntiForgeryToken()
-        <input class="btn btn-primary" type="submit" value="Add Quotation" />
-    }
-</p>
-<p>
-    @using (Html.BeginForm("CreateCategory", "Quotations"))
-    {
-        @Html.AntiForgeryToken()
-        <input class="btn btn-primary" type="submit" value="Add Category" />
-    }
-</p>
+@if (ViewBag.UserLoggedIn)
+{
+    <p>
+        @using(Html.BeginForm("ViewUserQuotations", "Quotations"))
+        {
+            @Html.AntiForgeryToken()
+            <input class="btn btn-primary" type="submit" value="View My Quotations" />
+        }
+    </p>
+    <p>
+        @using(Html.BeginForm("Create", "Quotations")) 
+        {
+            @Html.AntiForgeryToken()
+            <input class="btn btn-primary" type="submit" value="Add Quotation" />
+        }
+    </p>
+    <p>
+        @using (Html.BeginForm("CreateCategory", "Quotations"))
+        {
+            @Html.AntiForgeryToken()
+            <input class="btn btn-primary" type="submit" value="Add Category" />
+        }
+    </p>
+}
 @using (Html.BeginForm())
 {
     <p>
