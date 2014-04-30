@@ -18,36 +18,38 @@ namespace Quotations.Controllers
         //}
 
         // GET api/<controller>/5
-        public string Get(int id)
+        [HttpGet]
+        public QuotationViewModel Quotation(int id)
         {
-            return "value";
-        }
-
-        // POST api/<controller>
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
+            var quote = db.Quotations.Where(q => q.QuotationId == id).FirstOrDefault();
+            if (quote != null)
+            {
+                return new QuotationViewModel { Quote = quote.Quote, Author = quote.Author, Category = quote.Category.Name };
+            }
+            else
+            {
+                // Return a null view model
+                return new QuotationViewModel();
+            }
         }
 
         [HttpGet]
-        public string Random()
+        public IEnumerable<QuotationViewModel> Quotations()
+        {
+            return from quote in db.Quotations.ToList()
+                        select new QuotationViewModel { Quote = quote.Quote, Author = quote.Author, Category = quote.Category.Name };
+        }
+
+        [HttpGet]
+        public QuotationViewModel RandomQuotation()
         {
             Random rand = new Random();
             var ids = db.Quotations.Select(q => q.QuotationId);
             var idArray = ids.ToArray();
-            int randomIndex = rand.Next(1, idArray.Length);
+            int randomIndex = rand.Next(0, idArray.Length);
             int id = idArray[randomIndex];
             var quote = db.Quotations.Where(q => q.QuotationId == id).First();
-            return quote.Quote;
+            return new QuotationViewModel { Quote = quote.Quote, Author = quote.Author, Category = quote.Category.Name };
         }
     }
 }
