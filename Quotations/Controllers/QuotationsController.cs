@@ -10,6 +10,7 @@ using Quotations.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace Quotations.Controllers
 {
@@ -26,6 +27,17 @@ namespace Quotations.Controllers
         // GET: /Quotations/
         public ActionResult Index(string search)
         {
+            // Grab the quote of the day if it exists, or make it first
+            if (Session["qotd"] == null)
+            {
+                HttpClient client = new HttpClient();
+                string url = Request.Url.GetLeftPart(UriPartial.Authority);
+                HttpResponseMessage response = client.GetAsync(url + "/api/QuotationsApi/RandomQuotation").Result;
+                var quote = response.Content.ReadAsAsync<QuotationViewModel>().Result;
+                Session["qotd"] = quote;
+            }
+            ViewBag.QOTD = Session["qotd"];
+
             var quotations = db.Quotations.Include(q => q.Category);
             ViewBag.UserLoggedIn = User.Identity.IsAuthenticated;
             // If the user is an admin, pass that to the viewbag
