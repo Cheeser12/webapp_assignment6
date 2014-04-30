@@ -22,6 +22,23 @@
     </div>
 }
 
+@using (Html.BeginForm("ImportQuotes", "Admin", FormMethod.Post))
+{
+    <div class="form-group">
+        <label for="importUrl">Import URL: </label>
+        <div>
+            @Html.TextBox("importUrl", null, new { id = "importUrl", @class = "form-control input-sm" })
+
+            @if (ViewBag.ImportResult != null)
+            {
+                var resultClass = ViewBag.Imported ? "text-success" : "text-danger";
+                <p class=@resultClass>@ViewBag.ImportResult</p>
+            }
+        </div>
+        <input class="btn btn-danger" type="submit" value="Import Quotes" />
+    </div>
+}
+
 <h3>Statistics</h3>
 
 <p><b>Number of users:</b> @ViewBag.UserCount</p>
