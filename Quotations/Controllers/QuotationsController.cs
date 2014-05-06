@@ -277,6 +277,12 @@ namespace Quotations.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult API()
+        {
+            ViewBag.ApplicationRoot = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~"));
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

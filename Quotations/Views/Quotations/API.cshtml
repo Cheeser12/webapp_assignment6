@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "API";
+}
+
+<h2>API Reference</h2>
+
+<p>You can use these API methods to access and even modify the quotes database.</p>
+
+<ul>
+    <li>
+        <h4><b>GET</b> /api/QuotationsApi/Quotation/{id}</h4>
+        <div>
+            <b>Parameters:</b>
+            <ul>
+                <li><b>id:</b> the id of a quotation</li>
+            </ul>
+        </div>
+        <div>
+            <b>Example:</b>
+            <a href="@(ViewBag.ApplicationRoot + "api/QuotationsApi/Quotation/5")">api/QuotationsApi/Quotation/5</a>
+        </div>
+    </li>
+    <li>
+        <h4><b>GET</b> /api/QuotationsApi/DeleteQuote/{id}</h4>
+        <div>
+            <b>Parameters:</b>
+            <ul>
+                <li><b>id:</b> the id of a quotation</li>
+            </ul>
+        </div>
+        <div>
+            <b>Note:</b> Requires authorization (you must be the owner of the quote or an admin)
+        </div>
+        <div>
+            <b>Example:</b>
+            <a href="@(ViewBag.ApplicationRoot + "api/QuotationsApi/DeleteQuote/5")">api/QuotationsApi/DeleteQuote/5</a>
+        </div>
+    </li>
+    <li>
+        <h4><b>POST</b> /api/QuotationsApi/CreateQuote</h4>
+        <div>
+            <b>Parameters:</b>
+            <ul>
+                <li><b>quote:</b> a quotation object with "Name", "Author", and "Category" fields</li>
+            </ul>
+        </div>
+        <div>
+            <b>Note:</b> Requires authorization (you must be logged in)
+        </div>
+    </li>
+    <li>
+        <h4><b>POST</b> /api/QuotationsApi/UpdateQuote/{id}</h4>
+        <div>
+            <b>Parameters:</b>
+            <ul>
+                <li><b>id</b> the id of a quotation</li>
+                <li><b>quote:</b> a quotation object with "Name", "Author", and "Category" fields</li>
+            </ul>
+        </div>
+        <div>
+            <b>Note:</b> Requires authorization (you must be the owner of the quote or an admin)
+        </div>
+    </li>
+    <li>
+        <h4><b>GET</b> /api/QuotationsApi/Quotations</h4>
+        <div>
+            <b>Example:</b>
+            <a href="@(ViewBag.ApplicationRoot + "api/QuotationsApi/Quotations")">api/QuotationsApi/Quotations</a>
+        </div>
+    </li>
+    <li>
+        <h4><b>GET</b> /api/QuotationsApi/RandomQuotation</h4>
+        <div>
+            <b>Example:</b>
+            <a href="@(ViewBag.ApplicationRoot + "api/QuotationsApi/RandomQuotation")">api/QuotationsApi/RandomQuotation</a>
+        </div>
+    </li>
+</ul>
+
