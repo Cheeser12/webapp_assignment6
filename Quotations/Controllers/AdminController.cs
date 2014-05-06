@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Newtonsoft.Json;
+using Quotations.Helper;
 using Quotations.Models;
 using System;
 using System.Collections.Generic;
@@ -119,11 +120,9 @@ namespace Quotations.Controllers
                 // We'll only add a quote if it doesn't already exist in the database 
                 if (db.Quotations.Where(q => q.Quote.Equals(quote.Quote)).Count() == 0)
                 {
-                    // Add the category if it doesn't already exist in the database
-                    if (db.Categories.Where(c => c.Name.Equals(quote.Category)).Count() == 0)
+                    using (var categoryCreator = new CategoryCreationHelper())
                     {
-                        db.Categories.Add(new Category { Name = quote.Category });
-                        db.SaveChanges();
+                        categoryCreator.TryCreateCategory(quote.Category);
                     }
 
                     // Grab the category
